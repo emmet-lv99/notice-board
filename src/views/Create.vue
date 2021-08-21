@@ -17,7 +17,9 @@
     </ul>
   </form>
   <div class="create__buttons">
-    <button @click="enrollData({data: noticeDataSet, moveTo: '/'})">작성</button>
+    <button v-if="!editDataStorage" @click="enrollData({data: noticeDataSet, moveTo: '/'})">작성</button>
+    <button v-if="editDataStorage" @click="editComplete({data: noticeDataSet, moveTo: noticeDataSet.noticeId})">수정완료</button>
+    <button v-if="editDataStorage" @click="editCancel">취소</button>
   </div>
 </template>
 
@@ -35,21 +37,30 @@ export default {
     }
   }),
   computed: {
-    ...mapState(['noticeItems']),
+    ...mapState(['noticeItems', 'countItem', 'editDataStorage']),
   },
   created() {
-    this.countNotice()
+    if (this.editDataStorage !== null) {
+      this.noticeDataSet = this.editDataStorage
+    } else if (this.editDataStorage === null) {
+      this.countNotice()
+    }
   },
   methods:{
-    ...mapActions(['enrollData']),
+    ...mapActions(['enrollData', 'clearEditDataStorage', 'editComplete']),
     countNotice() {
-      this.noticeDataSet.noticeId = this.noticeItems.length + 1
+      this.noticeDataSet.noticeId = this.countItem + 1
+    },
+    editCancel() {
+      this.$router.go(-1)
+      this.clearEditDataStorage()
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+form {width: 100%}
 .create__sections {
   max-width: 800px;
   width: 100%;

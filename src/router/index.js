@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import vuex from '../store'
 import Home from '../views/Home.vue'
+
+const store = vuex
 
 const routes = [
   {
@@ -20,7 +23,12 @@ const routes = [
   {
     path: '/:boardPath',
     name: 'Detail',
-    component: () => import('../views/Detail.vue')
+    component: () => import('../views/Detail.vue'),
+    beforeEnter: (to, from) => {
+      if (store.state.noticeItems.length <= 0 || store.state.noticeItems === null) {
+        return from
+      }
+    }
   }
 ]
 

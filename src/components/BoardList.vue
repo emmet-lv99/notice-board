@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import {computed} from 'vue'
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import BoardListItem from '@/components/BoardListItem.vue';
 import {useStore} from 'vuex'
@@ -46,8 +46,19 @@ export default {
 
     const writeText = ()=> router.push('/create')
 
+
     const orgBoardData = computed(()=> store.state.noticeItems)
-    const boardData = orgBoardData
+    const boardData = orgBoardData.value
+    // const boardDataSort = () => {
+    //   if (boardData.length > 0 === boardData !== null) {
+    //     boardData.reverse()
+    //     console.log(boardData)
+    //   } else {
+    //     console.log('err')
+    //   }
+    // }
+
+    // onMounted(() => boardDataSort())
 
     const moveToPage = (path) => router.push({ name: 'Detail', params: {boardPath: path}})
 
@@ -55,7 +66,7 @@ export default {
     return {
       writeText,
       boardData,
-      moveToPage
+      moveToPage,
     }
   }
 }

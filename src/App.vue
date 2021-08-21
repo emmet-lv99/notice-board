@@ -41,6 +41,7 @@ export default {
 }
 main {
   display: flex;
+  padding: 0 20px;
   justify-content: center;
   align-items: center;
   height: calc(100% - 233px);
