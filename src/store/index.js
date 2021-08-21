@@ -1,18 +1,19 @@
 import { createStore } from 'vuex'
+import router from '../router'
 
 export default createStore({
   state: {
-    stateValue: 0
+    noticeItems: []
   },
   mutations: {
-    upState (state, payloadd){
-      state.stateValue = payloadd
-      console.log('mutations')
+    addNoticeItem(state, newNoticeData) {
+      state.noticeItems.push(newNoticeData)
     }
   },
   actions: {
-    stateAction({commit}, payload) {
-      commit("upState", payload)
+    enrollData({commit}, newNotice) {
+      commit("addNoticeItem", newNotice.data)
+      router.push(newNotice.moveTo)
     }
   },
   modules: {

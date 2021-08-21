@@ -1,15 +1,25 @@
 <template>
-  <ul class="content-header">
-    <li class="content-header__id">순서</li>
-    <li class="content-header__title">제목</li>
-    <li class="content-header__user">작성자</li>
+  <ul @click="moveDetail" class="content-header">
+    <li class="content-header__id">{{ noticeId }}</li>
+    <li class="content-header__title">{{ noticeTitle }}</li>
+    <li class="content-header__user">{{ noticeUser }}</li>
     <li class="content-header__date">날짜</li>
   </ul>
 </template>
 
 <script>
 export default {
-  name: "BoardListItem.vue"
+  name: "BoardListItem.vue",
+  props: [
+      'noticeTitle',
+      'noticeUser',
+      'noticeId'
+  ],
+  methods: {
+    moveDetail() {
+      this.$emit('moveDetail', this.noticeId)
+    }
+  }
 }
 </script>
 

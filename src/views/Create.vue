@@ -4,32 +4,55 @@
     <ul class="create__sections">
       <li>
         <label for="create__title">제목</label>
-        <input id="create__title" type="text">
+        <input v-model="noticeDataSet.noticeTitle" id="create__title" type="text">
       </li>
       <li>
         <label for="create__user">작성자</label>
-        <input id="create__user" type="text">
+        <input v-model="noticeDataSet.noticeUser" id="create__user" type="text">
       </li>
       <li>
         <label for="create__content">글 내용</label>
-        <textarea id="create__content"></textarea>
+        <textarea v-model="noticeDataSet.noticeContent" id="create__content"></textarea>
       </li>
     </ul>
   </form>
   <div class="create__buttons">
-    <button>작성</button>
+    <button @click="enrollData({data: noticeDataSet, moveTo: '/'})">작성</button>
   </div>
 </template>
 
 <script>
+import {mapState, mapActions} from 'vuex'
+
 export default {
-  name: "BoardCreate"
+  name: "BoardCreate",
+  data: () => ({
+    noticeDataSet: {
+      noticeId: 0,
+      noticeTitle: '',
+      noticeUser: '',
+      noticeContent: ''
+    }
+  }),
+  computed: {
+    ...mapState(['noticeItems']),
+  },
+  created() {
+    this.countNotice()
+  },
+  methods:{
+    ...mapActions(['enrollData']),
+    countNotice() {
+      this.noticeDataSet.noticeId = this.noticeItems.length + 1
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .create__sections {
-  width: 800px;
+  max-width: 800px;
+  width: 100%;
   padding: 0;
   li {
     width: 100%;

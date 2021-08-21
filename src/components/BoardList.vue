@@ -10,20 +10,27 @@
       <li class="table-header__date">날짜</li>
     </ul>
     <section class="table-body">
-      <section v-if="!isContentItem" class="table-body__content--empty">
+      <section v-if="boardData.length <= 0" class="table-body__content--empty">
         게시글이 없습니다. 정신차리세요
       </section>
-      <section v-if="isContentItem" class="table-body__content">
-        <board-list-item/>
+      <section v-if="boardData.length > 0" class="table-body__content">
+        <board-list-item
+            v-for=" item in boardData" :key="item.noticeId"
+            :noticeId = "item.noticeId"
+            :noticeTitle = "item.noticeTitle"
+            :noticeUser = "item.noticeUser"
+            @moveDetail = "moveToPage"
+        />
       </section>
     </section>
   </article>
 </template>
 
 <script>
-import {ref} from 'vue'
+import {computed} from 'vue'
 import { useRouter } from 'vue-router'
 import BoardListItem from '@/components/BoardListItem.vue';
+import {useStore} from 'vuex'
 
 export default {
   name: 'HelloWorld',
@@ -35,13 +42,20 @@ export default {
   },
   setup() {
     const router = useRouter()
-    
-    const isContentItem = ref(true)
+    const store = useStore()
+
     const writeText = ()=> router.push('/create')
-    
+
+    const orgBoardData = computed(()=> store.state.noticeItems)
+    const boardData = orgBoardData
+
+    const moveToPage = (path) => router.push({ name: 'Detail', params: {boardPath: path}})
+
+
     return {
-      isContentItem,
-      writeText
+      writeText,
+      boardData,
+      moveToPage
     }
   }
 }
@@ -54,7 +68,7 @@ ul {
   padding: 0;
 }
 .table {
-  width: 800px;
+  width: 100%;
   max-width: 800px;
   .table-create {
     text-align: right;
